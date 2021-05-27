@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "subscribers",
+  "info": {
+    "name": "subscriber",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "taxId": {
+      "type": "string"
+    },
+    "personalDocument": {
+      "type": "string"
+    },
+    "address": {
+      "type": "component",
+      "repeatable": true,
+      "component": "location.address"
+    },
+    "uuid": {
+      "type": "uid"
+    }
+  }
+}

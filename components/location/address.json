@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_location_addresses",
+  "info": {
+    "name": "address",
+    "icon": "location-arrow"
+  },
+  "options": {},
+  "attributes": {
+    "state": {
+      "model": "state"
+    },
+    "country": {
+      "model": "country"
+    },
+    "address": {
+      "type": "string"
+    }
+  }
+}
