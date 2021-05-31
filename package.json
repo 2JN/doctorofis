@@ -12,6 +12,7 @@
   "devDependencies": {},
   "dependencies": {
     "crypto-js": "^4.0.0",
+    "date-fns": "^2.21.3",
     "knex": "0.21.18",
     "sqlite3": "5.0.0",
     "strapi": "3.6.2",
