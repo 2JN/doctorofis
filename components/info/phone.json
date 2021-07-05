@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_location_phones",
+  "info": {
+    "name": "phone",
+    "icon": "phone"
+  },
+  "options": {},
+  "attributes": {
+    "number": {
+      "type": "string"
+    }
+  }
+}

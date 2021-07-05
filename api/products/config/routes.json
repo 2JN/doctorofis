@@ -1,0 +1,16 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/products",
+      "handler": "products.find",
+      "config": {}
+    },
+    {
+      "method": "GET",
+      "path": "/prodcuts/:id",
+      "handler": "products.findOne",
+      "config": {}
+    }
+  ]
+}

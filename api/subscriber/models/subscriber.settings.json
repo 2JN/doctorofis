@@ -21,10 +21,26 @@
     "address": {
       "type": "component",
       "repeatable": true,
-      "component": "location.address"
+      "component": "info.address"
     },
     "uuid": {
       "type": "uid"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "component",
+      "repeatable": true,
+      "component": "info.phone"
+    },
+    "beneficiary": {
+      "type": "component",
+      "repeatable": true,
+      "component": "info.beneficiary"
     }
   }
 }

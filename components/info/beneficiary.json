@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_location_beneficiaries",
+  "info": {
+    "name": "beneficiary",
+    "icon": "users",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    }
+  }
+}
