@@ -1,5 +1,6 @@
 'use strict'
 const { parseMultipartData, sanitizeEntity } = require('strapi-utils')
+const generatePassword = require('password-generator')
 const { v4 } = require('uuid')
 
 const r2co = require('../../../lib/2checkout')
@@ -63,6 +64,15 @@ module.exports = {
         'No se pudo completar el pago, intentalo más tarde'
       )
 
+    const password = generatePassword(12, false)
+
+    data.users_permissions_user = await strapi
+      .query('user', 'users-permissions')
+      .create({
+        ...data,
+        password,
+      })
+
     data.uuid = v4()
     data.phone = [{ number: data.phone }, { number: data.phone2 }]
     data.address = [
@@ -75,6 +85,10 @@ module.exports = {
 
     if (files) entity = await strapi.services.subscriber.create(data, { files })
     else entity = await strapi.services.subscriber.create(data)
+
+    await strapi.plugins[
+      'users-permissions'
+    ].services.user.sendConfirmationEmail(data.users_permissions_user)
 
     return sanitizeEntity(entity, { model: strapi.models.subscriber })
   },
