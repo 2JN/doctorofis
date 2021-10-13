@@ -4,6 +4,7 @@ const generatePassword = require('password-generator')
 const { v4 } = require('uuid')
 
 const r2co = require('../../../lib/2checkout')
+const confirmSubscriberTemplate = require('../../../config/email-templates/confirm-subscriber')
 
 module.exports = {
   async create(ctx) {
@@ -18,6 +19,8 @@ module.exports = {
     } else {
       data = ctx.request.body
     }
+
+    data.email = data.email.toLowerCase()
 
     const res = await r2co({
       url: '/orders',
@@ -52,7 +55,6 @@ module.exports = {
             Vendor3DSReturnURL: ctx.request.hostname,
             Vendor3DSCancelURL: ctx.request.hostname,
           },
-          Type: 'TEST',
         },
       },
     }).catch((err) => {
@@ -66,12 +68,17 @@ module.exports = {
 
     const password = generatePassword(12, false)
 
-    data.users_permissions_user = await strapi
-      .query('user', 'users-permissions')
-      .create({
-        ...data,
-        password,
-      })
+    const user = await strapi.plugins['users-permissions'].services.user.add({
+      email: data.email,
+      username: data.email,
+      confirmed: true,
+      blocked: false,
+      provider: 'local',
+      role: 1,
+      password,
+    })
+
+    data.users_permissions_user = user.id
 
     data.uuid = v4()
     data.phone = [{ number: data.phone }, { number: data.phone2 }]
@@ -86,9 +93,22 @@ module.exports = {
     if (files) entity = await strapi.services.subscriber.create(data, { files })
     else entity = await strapi.services.subscriber.create(data)
 
-    await strapi.plugins[
-      'users-permissions'
-    ].services.user.sendConfirmationEmail(data.users_permissions_user)
+    await strapi.plugins.email.services.email
+      .sendTemplatedEmail(
+        {
+          to: data.email,
+        },
+        confirmSubscriberTemplate,
+        {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          password,
+        }
+      )
+      .catch((err) => {
+        console.error(`Email confirmation error for user ${data.email}`)
+        console.error(err)
+      })
 
     return sanitizeEntity(entity, { model: strapi.models.subscriber })
   },
