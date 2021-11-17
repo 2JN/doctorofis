@@ -112,4 +112,30 @@ module.exports = {
 
     return sanitizeEntity(entity, { model: strapi.models.subscriber })
   },
+
+  async update(ctx) {
+    const { id } = ctx.params
+
+    let entity
+
+    const [subscriber] = await strapi.services.subscriber.find({
+      id,
+      'users_permissions_user.id': ctx.state.user.id,
+    })
+
+    if (!subscriber) {
+      return ctx.unauthorized("You can't update this entry")
+    }
+
+    if (ctx.is('multipart')) {
+      const { data, files } = parseMultipartData(ctx)
+      entity = await strapi.services.subscriber.update({ id }, data, {
+        files,
+      })
+    } else {
+      entity = await strapi.services.subscriber.update({ id }, ctx.request.body)
+    }
+
+    return sanitizeEntity(entity, { model: strapi.models.subscriber })
+  },
 }
