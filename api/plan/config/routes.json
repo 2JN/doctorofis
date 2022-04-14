@@ -47,6 +47,14 @@
       "config": {
         "policies": []
       }
+    },
+    {
+      "method": "GET",
+      "path": "/plans/paypal-sync",
+      "handler": "plan.paypalSync",
+      "config": {
+        "policies": []
+      }
     }
   ]
 }

@@ -23,7 +23,7 @@
       "repeatable": true,
       "component": "info.address"
     },
-    "uuid": {
+    "paypalID": {
       "type": "uid"
     },
     "firstName": {
@@ -46,6 +46,9 @@
       "plugin": "users-permissions",
       "model": "user",
       "via": "subscriber"
+    },
+    "plan": {
+      "model": "plan"
     }
   }
 }
